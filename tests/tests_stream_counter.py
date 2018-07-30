@@ -23,10 +23,13 @@ class tests_stream_counter(unittest.TestCase):
 
         print(sys.getsizeof(sc))
 
-    def test__renew__timing__whenCalledWithOneMillionSequentialRequests__recordsTimeTaken(self):
+    def test__renew__timing__whenCalledWithOneHundredThousandSequentialRequests__recordsTimeTaken(self):
         sc = stream_counter()
 
-        for i in range(0, 1000000):
+        start_time = datetime.utcnow()
+
+        for i in range(0, 100000):
             sc.renew('S%i' % i, 0, 3)
 
+        print('100k renews completed in time %s' % (datetime.utcnow() - start_time))
         print(sys.getsizeof(sc))
