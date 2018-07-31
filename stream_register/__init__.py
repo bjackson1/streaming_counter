@@ -7,13 +7,23 @@ class stream_register:
         self.lock = threading.Lock()
         self.streams = {}
 
-    def add(self, subscription_id, stream_id):
-        self.lock.acquire()
-
+    def renew(self, subscription_id, stream_id):
         try:
-            if not subscription_id in self.streams:
-                self.streams[subscription_id] = stream_counter()
+            if self.lock.acquire(timeout=3):
+                if not subscription_id in self.streams:
+                    self.streams[subscription_id] = stream_counter()
+
+            else:
+                # Assumes that if a timeout occurs locking the dict that it is better to fail open (i.e. allow the stream)
+
+                # We can expect that timeouts should not occur here, so it would be best to log to file when this occurs
+                #  and pick up in monitoring/alerting
+                return True
+
+        except:
+            return True
+
         finally:
             self.lock.release()
 
-        self.streams[subscription_id].renew(stream_id, 90, 3)
+        return self.streams[subscription_id].renew(stream_id, 90, 3)

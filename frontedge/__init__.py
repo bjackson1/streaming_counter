@@ -8,7 +8,7 @@ stream_register = stream_register()
 @app.route('/renew/<subscriber_id>/<stream_id>')
 def renew(subscriber_id, stream_id):
     try:
-        renewed = stream_register.add(subscriber_id, stream_id)
+        renewed = stream_register.renew(subscriber_id, stream_id)
 
         return "{'status': '%s'}" % ('OK' if renewed == True else 'SubscriptionLimitReached'), 200
     except:
