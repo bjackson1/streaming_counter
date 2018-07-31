@@ -27,6 +27,19 @@ Combined with the sharding approach used for performance scaling
 
 # Scaling for Performance
 
+## Optimisation
+
+The solution is not been optimised in any way.  The first avenue to performance scaling would be to review the codebase and supporting components:
+
+* Flask is used to provide the endpoints in naked format.  Alternative higher performance options could be investigated
+* The code has some expensive operations, which could be potentially moved away from from main flow
+* If locking of the main dict becomes a bottleneck, then sharding and locking of individual dict objects may provide relief
+
+In addition to optimisation of the codebase, it is important to ensure that the most appropriate hosting solution is selected.  At this point the solution is hosted on AWS Elastic Container Service using a `t2.micro` instance.
+
+
+## Distribution
+
 The PoC is built as a single instance that can be scaled only vertically (i.e. adding hardware/VM resources).
 
 A branch is provided in the repository called `sharding_spike` to demonstrate implementation of horizontal scaling through distribution of load based on a high performance hash of the subscriber_id.
@@ -38,7 +51,12 @@ The service can be run locally, or accessed via it's online implemenation.
 
 ## Local
 
-`cmds...`
+````
+docker build -t stream_register .
+docker run -p 5005:5005 stream_register
+
+curl http://localhost:5005/renew/sub_id/str_id
+````
 
 ## Online
 
