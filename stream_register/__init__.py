@@ -3,6 +3,10 @@ from stream_counter import stream_counter
 
 
 class stream_register:
+    LEASE_TIME_SECONDS = 90
+    MAXIMUM_CONCURRENT_STREAMS = 3
+    DEFAULT_FAILURE_STATE = True
+
     def __init__(self):
         self.lock = threading.Lock()
         self.streams = {}
@@ -18,12 +22,9 @@ class stream_register:
 
                 # We can expect that timeouts should not occur here, so it would be best to log to file when this occurs
                 #  and pick up in monitoring/alerting
-                return True
-
-        except:
-            return True
+                return self.DEFAULT_FAILURE_STATE
 
         finally:
             self.lock.release()
 
-        return self.streams[subscription_id].renew(stream_id, 90, 3)
+        return self.streams[subscription_id].renew(stream_id, self.LEASE_TIME_SECONDS, self.MAXIMUM_CONCURRENT_STREAMS)

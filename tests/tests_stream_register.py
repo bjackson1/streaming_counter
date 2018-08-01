@@ -1,4 +1,5 @@
 import unittest
+import mock
 import sys
 from datetime import datetime
 from stream_register import stream_register
@@ -35,4 +36,11 @@ class tests_stream_register(unittest.TestCase):
             self.assertEqual(sr.renew('sub%s' % i, 'str01'), True)
             self.assertEqual(sr.renew('sub%s' % i, 'str02'), True)
             self.assertEqual(sr.renew('sub%s' % i, 'str03'), False)
+
+    def test__renew__whenCalledButCannotObtainALock__returnsTrue(self):
+        sr = stream_register()
+
+        sr.lock.acquire()
+
+        self.assertEqual(sr.renew('sub00', 'str00'), True)
 

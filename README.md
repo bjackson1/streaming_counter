@@ -7,22 +7,21 @@ The service assumes that a live stream will periodically maintain a lease with t
 
 # Assumptions
 
+* The level of submission for this test should be to a proof-of-concept, rather than production ready
 * A subscribe/renew/expire pattern is applicable for managing concurrent streams, on the basis that this would be an online service
 * Given the availability/consistency/partition trilema, that availability is most important
 * It cannot be relied upon that a stream will be ended gracefully, or that this service will receive any notification
-* The level of submission should be to a proof-of-concept, rather than production ready
-* Performance metrics are not stated, but given the scale of the organisation an aim of 30,000 concurrent streams with a peak load of 300tps might be a reasonable aim
+* Performance metrics are not stated, but given the scale of the organisation an aim of 30,000 concurrent streams with a peak load of 300tps might be a reasonable aim.
 * The service will not be consumed directly by a client, but by another trusted service
 * A unique `subscriber_id` is available to identify a subscription that holds a limit of 3 concurrent streams
 * A unique `stream_id` is available to identify an individual live stream
 * Upon individual component failure that it may be accessible to temporarily allow >3 concurrent streams, but that the architecture will allow these to be automatically pared back on service restoration
+* Where > 3 streams are requested, the preference is to continue existing streams and deny the new one
 
 
 # Availability
 
-The service is built in such a way that data is short-term in nature and can be quickly re-created by the consumers.  Therefore upon failure of an component service can be maintained by destroying and regeneration free from replication or data recovery considerations.
-
-Combined with the sharding approach used for performance scaling
+The service is built in such a way that data is short-term in nature and can be quickly re-created by the consumers.  Therefore upon failure of an component service can be maintained by destroying pods and regeneration free from replication or data recovery considerations.
 
 
 # Scaling for Performance
@@ -60,4 +59,6 @@ curl http://localhost:5005/renew/sub_id/str_id
 
 ## Online
 
-`curl ....`
+````
+curl http://stream-register-lb-1461482584.eu-west-1.elb.amazonaws.com/renew/sub_id/str_id
+````
