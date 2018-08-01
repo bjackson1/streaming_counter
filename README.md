@@ -25,7 +25,7 @@ The service is built in such a way that data is short-term in nature and can be 
 
 # Scaling for Performance
 
-The service as built for this submission is proven capable of 100+tps based on the aforementioned AWS t2.micro instance upon which it is hosted.
+The service as built for this submission is proven capable of 100+tps based on the AWS t2.micro instance upon which it is hosted.
 
 
 ## Optimisation
