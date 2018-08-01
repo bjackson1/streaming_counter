@@ -1,6 +1,6 @@
 # Overview
 
-Firstly, the test is written in Python.  This choice was made as it is the language I currently use most often, and provided the best foundation for me to build a PoC codebase for the test and to submit in a timely manner.
+This choice of language and framework for the submission is Python3 with Flask.  This choice was made as it is the language I currently use most often, and provided the best foundation for me to build a PoC codebase for the test and to submit in a timely manner.
 
 The service assumes that a live stream will periodically maintain a lease with this service that will expire if not renewed within a set time limit.
 
@@ -20,14 +20,17 @@ The service assumes that a live stream will periodically maintain a lease with t
 
 # Availability
 
-The service is built in such a way that data is short-term in nature and can be quickly re-created by the consumers.  Therefore upon failure of an component service can be maintained by destroying pods and regeneration free from replication or data recovery considerations.
+The service is built in such a way that data is short-term in nature and can be quickly re-created by the consumers.  Therefore upon component failure service can be maintained by destroying and re-generating pods/containers.  Data recovery would be achieved automatically within the timeframe of a lease.
 
 
 # Scaling for Performance
 
+The service as built for this submission is proven capable of 100+tps based on the aforementioned AWS t2.micro instance upon which it is hosted.
+
+
 ## Optimisation
 
-The solution is not been optimised.  The first avenue to performance scaling would be to review the codebase and supporting components, e.g.:
+The solution is not optimised.  The first avenue to performance scaling would be to review the codebase and supporting components, e.g.:
 
 * Flask is used to provide the endpoints in naked format.  Alternative higher performance options could be investigated
 * The code has some expensive operations, which could be potentially moved away from from main flow
@@ -40,7 +43,7 @@ In addition to optimisation of the codebase, it is important to ensure that the 
 
 The PoC is built as a single instance that can be scaled only vertically (i.e. adding hardware/VM resources).
 
-To adapt the service to be horizontally scalable I might implement a sharding mechanism based on the subscriber ID.  An additional service could be created to handle requests from all subscribers, where the subscriber ID would be converted to a modulus of a number of required stream_register services, allowing consistent and even distribution of load.
+To adapt the service to be horizontally scalable I might implement a sharding mechanism based on the subscriber ID.  The approach would provide a mechanism to predictably distribute load across many nodes in an even manner (depending on selected hash/algorithm).
 
 
 # Running
