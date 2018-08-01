@@ -51,9 +51,15 @@ The service can be run locally, or accessed via it's online implementation.
 
 ````
 docker build -t stream_register .
-docker run -p 5005:5005 stream_register
+docker run -p 5005:5005 stream_register &
 
-curl http://localhost:5005/renew/sub_id/str_id
+curl http://localhost:5005/renew/sub_id/str_0
+curl http://localhost:5005/renew/sub_id/str_1
+curl http://localhost:5005/renew/sub_id/str_2
+curl http://localhost:5005/renew/sub_id/str_3
+
+# To kill the container
+docker kill $(docker ps | grep stream_register | awk '{print $1}')
 ````
 
 ## Online
