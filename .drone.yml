@@ -8,5 +8,5 @@ pipeline:
   build:
     image: bjackson1test/sc:latest
     commands:
-      - curl -v http://localhost
-
+      - apt-get install -y curl
+    
