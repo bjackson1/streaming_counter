@@ -1,4 +1,10 @@
 pipeline:
+  docker:
+    image: plugins/docker
+    username: bjackson1test
+    password: Dr0neSp1ke123
+    repo: sc
+    tag: latest
   build:
     image: python:3.6.6-slim
     commands:
