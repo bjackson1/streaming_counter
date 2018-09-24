@@ -1,0 +1,6 @@
+pipeline:
+  build:
+    image: python:3.6.6-slim
+    commands:
+      - python3 frontedge/__init__.py
+
