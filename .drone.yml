@@ -8,5 +8,4 @@ pipeline:
   build:
     image: bjackson1test/sc:latest
     commands:
-      - apt-get install -y curl
-    
+      - python3 -m unittest /tests/tests_*.py
